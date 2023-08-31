@@ -25,7 +25,14 @@ public class Cell : MonoBehaviour
         X = x;
         Y = y;
         Value = value;
+
+        UpdateVisial();
     }
 
+    private void UpdateVisial()// метод отображени€ количества очков и цвет €чейки
+    {
+        points.text = IsEmpty ? string.Empty : Points.ToString(); // проверка, если поле points пустое, то строка пуста€, иначе передать значение Points
+        image.color = Field.Instance.Colors[Value];// присвоить цвет image.component   
+    }
 
 }
