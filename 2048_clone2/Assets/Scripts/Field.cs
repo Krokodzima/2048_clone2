@@ -63,5 +63,25 @@ public class Field : MonoBehaviour
 
         }
 
+        for (int i = 0; i < 2; i++) // создать рандомную €чейку 2 раза
+            GenerateRandomeCell();
+    }
+
+    private void GenerateRandomeCell() // метод генерации рандомной €чейки
+    {
+        int x, y, itt =0; // счетчик иттераций
+        // задание веро€тности выпадени€ 4ки (1 к 10) и 2ки (9 к 10) 
+        int value = Random.Range(0, 10) == 0 ? 2 : 1; // если выпадает 0 то(?) 4ка(2^2), иначе (:) 2ка (2^1)
+
+        do
+        {
+            x = Random.Range(0, FieldSize);
+            y = Random.Range(0, FieldSize);
+        }
+        while (!field[x,y].IsEmpty && itt++ < 200); // делать, пока есть не пустые €чейки и счетчик иттераций < 200
+        if (itt == 200) 
+            throw new System.Exception("There in no any empty cell on the field");
+
+        field[x, y].SetValue(x, y, value); // присвоить €чейке значение 
     }
 }
