@@ -23,16 +23,32 @@ public class Field : MonoBehaviour
 
     private Cell[,] field;
 
+    private bool CellMoved; // двигалась ди ячейка
+
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
 
     }
-
+    
     void Start()
     {
         CreateField(); // вызов метода в старте
+
+        SwipeDetection.SwipeEvent += OnWsipeInput; // подписка на ивент
+    }
+
+    private void OnWsipeInput(Vector2 direction) // подписка на ивент
+    {
+        CellMoved = false;
+
+        Move(direction);
+
+        if (CellMoved)
+        {
+            GenerateRandomeCell();
+        }
     }
 
     private void CreateField() // метод создания поля
@@ -67,6 +83,12 @@ public class Field : MonoBehaviour
             GenerateRandomeCell();
     }
 
+    private void Move(Vector2 direction)
+    {
+
+    }
+
+   
     private void GenerateRandomeCell() // метод генерации рандомной ячейки
     {
         int x, y, itt =0; // счетчик иттераций
@@ -85,3 +107,5 @@ public class Field : MonoBehaviour
         field[x, y].SetValue(x, y, value); // присвоить ячейке значение 
     }
 }
+
+// 02:06:56
