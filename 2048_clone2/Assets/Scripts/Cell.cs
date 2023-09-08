@@ -10,6 +10,7 @@ public class Cell : MonoBehaviour
     public int Y { get; private set; }
     public int Value { get; private set; } // свойство Value(значение €чейки) может быть назначено внутри класса (private set), но снаружи только считано (get)
     public int Points => IsEmpty ? 0 : (int)Mathf.Pow(2, Value); // проверка, если €чейка пуста€, то 0, иначе (:) возводим 2ку в степень Value
+    public bool HasMerged { get; private set; }
 
     public bool IsEmpty => Value == 0; // €чейка пуста€, если Value = 0 (true), иначе есть очки (false)
 
@@ -26,13 +27,38 @@ public class Cell : MonoBehaviour
         Y = y;
         Value = value;
 
-        UpdateVisial();
+        UpdateVisual();
     }
 
-    private void UpdateVisial()// метод отображени€ количества очков и цвет €чейки
+    public void IncreaseValue()
+    {
+        Value++;
+        HasMerged = true;
+    }
+
+    public void ResetFlags()
+    {
+        HasMerged = false;
+    }
+
+    public void MergeWithCell(Cell otherCell)
+    {
+        otherCell.IncreaseValue();
+        SetValue(X, Y, 0);
+    }
+
+    public void MoveToCell(Cell target)
+    {
+        target.SetValue(target.X, target.Y, Value);
+        SetValue(X, Y, 0);
+    }
+
+    private void UpdateVisual()// метод отображени€ количества очков и цвет €чейки
     {
         points.text = IsEmpty ? string.Empty : Points.ToString(); // проверка, если поле points пустое, то строка пуста€, иначе передать значение Points
         image.color = Field.Instance.Colors[Value];// присвоить цвет image.component   
     }
 
 }
+
+// 1 02:50:37
