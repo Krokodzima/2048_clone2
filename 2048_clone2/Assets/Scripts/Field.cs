@@ -36,10 +36,10 @@ public class Field : MonoBehaviour
     {
         CreateField(); // вызов метода в старте
 
-        SwipeDetection.SwipeEvent += OnWsipeInput; // подписка на ивент
+        SwipeDetection.SwipeEvent += OnSwipeInput; // подписка на ивент
     }
 
-    private void OnWsipeInput(Vector2 direction) // подписка на ивент
+    private void OnSwipeInput(Vector2 direction) // подписка на ивент
     {
         cellMoved = false; // сброс флага
 
@@ -187,6 +187,7 @@ public class Field : MonoBehaviour
             y = Random.Range(0, FieldSize);
         }
         while (!field[x, y].IsEmpty && itt++ < 200); // делать, пока есть не пустые ячейки и счетчик иттераций < 200
+       
         if (itt == 200)
             throw new System.Exception("There in no any empty cell on the field");
 

@@ -30,7 +30,7 @@ public class SwipeDetection : MonoBehaviour
                 isSwiping = true; // режим свайпа мышкой - true
                 tapPosition = Input.mousePosition; // где тап мышкой - оттуда свайп
             }
-            else if (Input.GetMouseButtonDown(0)) // где мышь отпустили, там закочить свайп
+            else if (Input.GetMouseButtonUp(0)) // где мышь отпустили, там закочить свайп
                 ResetSwipe();
         }
         else
@@ -55,7 +55,7 @@ public class SwipeDetection : MonoBehaviour
         swipeDelta = Vector2.zero; // обнулили swipeDelta
         if (isSwiping)
         {
-            if (!isMobile && Input.GetMouseButtonDown(0)) // если не мобилка и ЛКМ зажата
+            if (!isMobile && Input.GetMouseButton(0)) // если не мобилка и ЛКМ зажата
                 swipeDelta = (Vector2)Input.mousePosition - tapPosition; // 
             else if (Input.touchCount > 0) // если на телефоне больше одного нажатия
                 swipeDelta = Input.touches[0].position - tapPosition; // самый первый тач [0] - tapPosition
@@ -68,12 +68,13 @@ public class SwipeDetection : MonoBehaviour
                 // опредедить направление свайпа (вектор swipeDelta имеет длину и направление, определить, что больше X или Y
                 if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y)) // если модуль wipeDelta.x больше модуля wipeDelta.y
                     SwipeEvent(swipeDelta.x > 0 ? Vector2.right : Vector2.left); // swipeDelta.x больше 0, тогда вправо, иначе влево
-                else    
-                SwipeEvent(swipeDelta.y > 0 ? Vector2.up : Vector2.down); // swipeDelta.y больше 0, тогда вверх[, иначе вниз
+                else
+                    SwipeEvent(swipeDelta.y > 0 ? Vector2.up : Vector2.down); // swipeDelta.y больше 0, тогда вверх[, иначе вниз
             }
+
+            ResetSwipe();
         }
 
-        ResetSwipe();
     }
 
     private void ResetSwipe() // метод сброса свайпа
