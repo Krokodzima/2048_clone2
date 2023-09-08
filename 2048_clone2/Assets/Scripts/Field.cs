@@ -23,7 +23,7 @@ public class Field : MonoBehaviour
 
     private Cell[,] field;
 
-    private bool CellMoved; // двигалась ди €чейка
+    private bool cellMoved; // двигалась ли €чейка
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class Field : MonoBehaviour
             Instance = this;
 
     }
-    
+
     void Start()
     {
         CreateField(); // вызов метода в старте
@@ -41,13 +41,15 @@ public class Field : MonoBehaviour
 
     private void OnWsipeInput(Vector2 direction) // подписка на ивент
     {
-        CellMoved = false;
+        cellMoved = false; // сброс флага
 
+        ResetCellFlags(); // сброс флага
         Move(direction);
 
-        if (CellMoved)
+        if (cellMoved)
         {
             GenerateRandomeCell();
+            CheckGameResult();
         }
     }
 
@@ -83,15 +85,99 @@ public class Field : MonoBehaviour
             GenerateRandomeCell();
     }
 
+
+
     private void Move(Vector2 direction)
+    {
+        // определение точки с которой начнетс€ "движение"
+        int startXY = direction.x > 0 || direction.y < 0 ? FieldSize - 1 : 0; // стартова€ €чейка равна, если движение вправо или(||) вниз, тогда (?) движение с самого кра€ пол€, иначе (:) 0 
+        int dir = direction.x != 0 ? (int)direction.x : -(int)direction.y; // direction.x не равен (!=) 0, если так (?) то = direction.x (1 или -1), иначе (:) отрицательный direction.y (1 или -1)   
+
+        for (int i = 0; i < FieldSize; i++)
+        {
+            for (int k = startXY; k >= 0 && k < FieldSize; k -= dir)
+            {   // direction.x не равен 0, если так(?) то горизонатльный мувмент = k по y, иначе(:) вертикальный мувмент = y по k
+                var cell = direction.x != 0 ? field[k, i] : field[i, k]; // находим €чейку текущую в которой мы находимс€ 
+
+                if (cell.IsEmpty) // если €чейка пуста€ -пропускаем, идем дальше
+                    continue;
+
+                var cellToMerge = FindCellToMerge(cell, direction);  // проверка на возможность объединени€
+                if (cellToMerge != null)  // если возможность не нулева€, объедин€ем
+                {
+                  cell.MergeWithCell(cellToMerge);// merge
+                    cellMoved = true;  // генерируетс€ €чейка и проверка выигрыша/проигрыша
+                    continue; // если нашли с кем объединитьс€ - не нужно искать пустое пространство
+                }
+
+                var emptyCell = FindEmptyCell(cell, direction); // ищем пустую €чейку
+                if (emptyCell != null) // если €чейка не пуста€, то перемещаемс€ в эту €чейку
+                {
+                    cell.MoveToCell(emptyCell);//move
+                    cellMoved = true;
+                }
+            }
+        }
+
+    }
+
+    private Cell FindCellToMerge(Cell cell, Vector2 direction) // поиск €чейки с которой можно объединитьс€
+    {
+        // расчет стартовой €чейки
+        int startX = cell.X + (int)direction.x; // startX = €чейка со значением + вектор направлени€
+        int startY = cell.Y - (int)direction.y; // startY = €чейка со значением - вектор направлени€
+
+        for (int x = startX, y = startY; x >= 0 && x < FieldSize && y >= 0 && y < FieldSize; x += (int)direction.x, y -= (int)direction.y)
+        {
+            if (field[x, y].IsEmpty) // если €чейка пуста€, то идем дальше
+                continue;
+            // проверка, что в данной €чейке кол-во очков = кол-ву очков нашей "€чейки" и в данном ходу еще не мен€ла свое значение
+            if (field[x, y].Value == cell.Value && !field[x, y].HasMerged)
+                return field[x, y];
+
+            break; // прекратить поиск
+        }
+
+        return null; // если нет клетки с которой можно объединитьс€
+    }
+
+    private Cell FindEmptyCell(Cell cell, Vector2 direction) // поиск пустой €чейки
+    {
+        Cell emptyCell = null;
+        int startX = cell.X + (int)direction.x;
+        int startY = cell.Y - (int)direction.y;
+
+        for (int x = startX, y = startY; x >= 0 && x < FieldSize && y >= 0 && y < FieldSize; x += (int)direction.x, y -= (int)direction.y)
+        {
+            if (field[x, y].IsEmpty) // если текуща€ €чейка пуста€, то emptyCell = эта €чейка
+                emptyCell = field[x, y];
+
+            else
+                break;
+
+        }
+
+
+
+        return emptyCell;
+    }
+
+    private void CheckGameResult() // проверка выиигрыша/прогигрыша в игре
     {
 
     }
 
-   
+
+    private void ResetCellFlags() // сброс флагов массива €чеек циклом 
+    {
+        for (int x = 0; x < FieldSize; x++)
+            for (int y = 0; y < FieldSize; y++)
+                field[x, y].ResetFlags();
+    }
+
     private void GenerateRandomeCell() // метод генерации рандомной €чейки
     {
-        int x, y, itt =0; // счетчик иттераций
+        int x, y, itt = 0; // счетчик иттераций
         // задание веро€тности выпадени€ 4ки (1 к 10) и 2ки (9 к 10) 
         int value = Random.Range(0, 10) == 0 ? 2 : 1; // если выпадает 0 то(?) 4ка(2^2), иначе (:) 2ка (2^1)
 
@@ -100,12 +186,12 @@ public class Field : MonoBehaviour
             x = Random.Range(0, FieldSize);
             y = Random.Range(0, FieldSize);
         }
-        while (!field[x,y].IsEmpty && itt++ < 200); // делать, пока есть не пустые €чейки и счетчик иттераций < 200
-        if (itt == 200) 
+        while (!field[x, y].IsEmpty && itt++ < 200); // делать, пока есть не пустые €чейки и счетчик иттераций < 200
+        if (itt == 200)
             throw new System.Exception("There in no any empty cell on the field");
 
         field[x, y].SetValue(x, y, value); // присвоить €чейке значение 
     }
 }
 
-// 02:06:56
+// 1 02:50:37
