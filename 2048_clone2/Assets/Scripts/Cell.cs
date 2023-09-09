@@ -21,7 +21,7 @@ public class Cell : MonoBehaviour
     private TextMeshProUGUI points;
 
 
-    public void SetValue(int x, int y, int value) // метод дл€ задани€ x,y,value
+    public void SetValue(int x, int y, int value) // метод дл€ задани€ x,y,value 
     {
         X = x;
         Y = y;
@@ -34,6 +34,8 @@ public class Cell : MonoBehaviour
     {
         Value++;
         HasMerged = true;
+
+        UpdateVisual(); // без апдейта - подлый баг (искал 2 дн€)
     }
 
     public void ResetFlags()

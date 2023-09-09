@@ -83,6 +83,12 @@ public class Field : MonoBehaviour
 
         for (int i = 0; i < 2; i++) // создать рандомную €чейку 2 раза
             GenerateRandomeCell();
+
+        // тест
+        //field[0, 0].SetValue(0, 0, 1);
+        //field[0, 1].SetValue(0, 1, 1);
+        //field[0, 2].SetValue(0, 2, 2);
+        //field[0, 3].SetValue(0, 3, 2);
     }
 
 
@@ -105,7 +111,7 @@ public class Field : MonoBehaviour
                 var cellToMerge = FindCellToMerge(cell, direction);  // проверка на возможность объединени€
                 if (cellToMerge != null)  // если возможность не нулева€, объедин€ем
                 {
-                  cell.MergeWithCell(cellToMerge);// merge
+                    cell.MergeWithCell(cellToMerge);// merge
                     cellMoved = true;  // генерируетс€ €чейка и проверка выигрыша/проигрыша
                     continue; // если нашли с кем объединитьс€ - не нужно искать пустое пространство
                 }
@@ -157,8 +163,6 @@ public class Field : MonoBehaviour
 
         }
 
-
-
         return emptyCell;
     }
 
@@ -177,6 +181,7 @@ public class Field : MonoBehaviour
 
     private void GenerateRandomeCell() // метод генерации рандомной €чейки
     {
+       // return; // включить дл€ принудительного теста (запрет на генерацию новых €чеек)
         int x, y, itt = 0; // счетчик иттераций
         // задание веро€тности выпадени€ 4ки (1 к 10) и 2ки (9 к 10) 
         int value = Random.Range(0, 10) == 0 ? 2 : 1; // если выпадает 0 то(?) 4ка(2^2), иначе (:) 2ка (2^1)
@@ -187,7 +192,7 @@ public class Field : MonoBehaviour
             y = Random.Range(0, FieldSize);
         }
         while (!field[x, y].IsEmpty && itt++ < 200); // делать, пока есть не пустые €чейки и счетчик иттераций < 200
-       
+
         if (itt == 200)
             throw new System.Exception("There in no any empty cell on the field");
 
