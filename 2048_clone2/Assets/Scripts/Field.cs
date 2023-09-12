@@ -39,6 +39,24 @@ public class Field : MonoBehaviour
         SwipeDetection.SwipeEvent += OnSwipeInput; // подписка на ивент
     }
 
+    private void Update()
+    {
+        // #if и #endif - ƒиректива препроцессора, код данного раздела будет выполн€тс€ только в UNITY_EDITOR
+        // данный код не будет скомпилирован на другие платформы, работает только в UNITY_EDITOR 
+#if UNITY_EDITOR
+        // прив€зка WASD к свайпу 
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            OnSwipeInput(Vector2.left);
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            OnSwipeInput(Vector2.right);
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            OnSwipeInput(Vector2.up);
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            OnSwipeInput(Vector2.down);
+
+#endif
+    }
+
     private void OnSwipeInput(Vector2 direction) // подписка на ивент
     {
         cellMoved = false; // сброс флага
@@ -181,23 +199,44 @@ public class Field : MonoBehaviour
 
     private void GenerateRandomeCell() // метод генерации рандомной €чейки
     {
-       // return; // включить дл€ принудительного теста (запрет на генерацию новых €чеек)
-        int x, y, itt = 0; // счетчик иттераций
-        // задание веро€тности выпадени€ 4ки (1 к 10) и 2ки (9 к 10) 
+        var emptyCells = new List<Cell>(); // создаем новый список типа <Cell> emptyCells
+
+        for (int x = 0; x < FieldSize; x++) // проход по всем €чейкам
+            for (int y = 0; y < FieldSize; y++)
+                if (field[x, y].IsEmpty) // если €чейка пуста€
+                    emptyCells.Add(field[x, y]); // тогда добавить ее в список 
+
         int value = Random.Range(0, 10) == 0 ? 2 : 1; // если выпадает 0 то(?) 4ка(2^2), иначе (:) 2ка (2^1)
 
-        do
-        {
-            x = Random.Range(0, FieldSize);
-            y = Random.Range(0, FieldSize);
-        }
-        while (!field[x, y].IsEmpty && itt++ < 200); // делать, пока есть не пустые €чейки и счетчик иттераций < 200
+        if (emptyCells.Count == 0) // если кол-во пустых €чеек в списке emptyCells = 0
+            throw new System.Exception("There in no any empty cell on the field"); // тогда выводим сообщение
 
-        if (itt == 200)
-            throw new System.Exception("There in no any empty cell on the field");
-
-        field[x, y].SetValue(x, y, value); // присвоить €чейке значение 
+        var cell = emptyCells[Random.Range(0, emptyCells.Count)]; // переменна€ cell - рандом от 0 до кол-ва пустых €чеек в списке emptyCells
+        cell.SetValue(cell.X, cell.Y, value); // присвоить €чейке cell координаты и значение 
     }
 }
+
+
+
+/* private void GenerateRandomeCell() // метод генерации рандомной €чейки (не лучший вариант)
+{
+    // return; // включить дл€ принудительного теста (запрет на генерацию новых €чеек)
+    int x, y, itt = 0; // счетчик иттераций
+                       // задание веро€тности выпадени€ 4ки (1 к 10) и 2ки (9 к 10) 
+    int value = Random.Range(0, 10) == 0 ? 2 : 1; // если выпадает 0 то(?) 4ка(2^2), иначе (:) 2ка (2^1)
+
+    do
+    {
+        x = Random.Range(0, FieldSize);
+        y = Random.Range(0, FieldSize);
+    }
+    while (!field[x, y].IsEmpty && itt++ < 200); // делать, пока есть не пустые €чейки и счетчик иттераций < 200
+
+    if (itt == 200)
+        throw new System.Exception("There in no any empty cell on the field");
+
+    field[x, y].SetValue(x, y, value); // присвоить €чейке значение 
+}
+*/
 
 // 1 02:50:37
