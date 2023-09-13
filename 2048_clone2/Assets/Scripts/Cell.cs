@@ -14,6 +14,7 @@ public class Cell : MonoBehaviour
 
     public bool IsEmpty => Value == 0; // €чейка пуста€, если Value = 0 (true), иначе есть очки (false)
 
+    public const int MaxValue = 11;
 
     [SerializeField]
     private Image image; // задаем пункт в меню - цвет €чейки равный номиналу
@@ -63,4 +64,4 @@ public class Cell : MonoBehaviour
 
 }
 
-// 1 02:50:37
+// 2 00:36:00

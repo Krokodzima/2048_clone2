@@ -103,8 +103,8 @@ public class Field : MonoBehaviour
             GenerateRandomeCell();
 
         // тест
-        //field[0, 0].SetValue(0, 0, 1);
-        //field[0, 1].SetValue(0, 1, 1);
+        field[0, 0].SetValue(0, 0, 10);
+        field[0, 1].SetValue(0, 1, 10);
         //field[0, 2].SetValue(0, 2, 2);
         //field[0, 3].SetValue(0, 3, 2);
     }
@@ -186,6 +186,33 @@ public class Field : MonoBehaviour
 
     private void CheckGameResult() // проверка выиигрыша/прогигрыша в игре
     {
+        bool isLoss = true;
+
+        for (var x = 0; x < FieldSize; x++)
+        {
+            for (var y = 0; y < FieldSize; y++)
+            {
+                if (field[x, y].Value == Cell.MaxValue) // если €чейка в массиве = константе MaxValue (11)
+                {
+                    GameController.Instance.Win();
+                    return; // выйти
+                }
+
+                if (field[x, y].IsEmpty ||  // если есть одна пуста€ €чейка
+                   FindCellToMerge(field[x, y], Vector2.left) || // есть ли слева €чейка с которой можно объединить
+                   FindCellToMerge(field[x, y], Vector2.right) ||
+                   FindCellToMerge(field[x, y], Vector2.up) ||
+                   FindCellToMerge(field[x, y], Vector2.down))
+                {
+                    isLoss = false; // не проигрыш
+                }
+            }
+
+        }
+
+        if (isLoss) // проверка, если прогиграли, вызов метода "моражение"
+            GameController.Instance.Loss();
+
 
     }
 
@@ -239,4 +266,4 @@ public class Field : MonoBehaviour
 }
 */
 
-// 1 02:50:37
+// 2 00:36:00
