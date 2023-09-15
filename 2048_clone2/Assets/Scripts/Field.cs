@@ -59,6 +59,9 @@ public class Field : MonoBehaviour
 
     private void OnSwipeInput(Vector2 direction) // подписка на ивент
     {
+        if (!GameController.CanPlay)
+            return;
+
         cellMoved = false; // сброс флага
 
         ResetCellFlags(); // сброс флага
@@ -96,20 +99,29 @@ public class Field : MonoBehaviour
 
                 cell.SetValue(x, y, 0); // задать значение 0 дл€ €чеек 
             }
-
         }
+    }
+
+
+    public void PrepareField()
+    {
+        if (field == null)
+            CreateField();
+
+            for (int x = 0; x < FieldSize; x++)
+                for (int y = 0; y < FieldSize; y++)
+                    field[x, y].SetValue(x, y, 0);
 
         for (int i = 0; i < 2; i++) // создать рандомную €чейку 2 раза
             GenerateRandomeCell();
 
+
         // тест
-        field[0, 0].SetValue(0, 0, 10);
-        field[0, 1].SetValue(0, 1, 10);
-        //field[0, 2].SetValue(0, 2, 2);
-        //field[0, 3].SetValue(0, 3, 2);
+        // field[0, 0].SetValue(0, 0, 10);
+        // field[0, 1].SetValue(0, 1, 10);
+        // field[0, 2].SetValue(0, 2, 2);
+        // field[0, 3].SetValue(0, 3, 2);
     }
-
-
 
     private void Move(Vector2 direction)
     {
@@ -266,4 +278,4 @@ public class Field : MonoBehaviour
 }
 */
 
-// 2 00:36:00
+// 2 00:40:15

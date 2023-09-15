@@ -14,27 +14,31 @@ public class GameController : MonoBehaviour
             Instance = this;
     }
 
-    void Start()
+   private void Start()
     {
-
+        StartGame();
     }
 
    public void StartGame() // старт игры
     {
-        
+        CanPlay = true;
+
+        Field.Instance.PrepareField();
     }
 
     public void Win() // победа
     {
+        CanPlay = false;
         Debug.Log("WIN!");
     }
 
     public void Loss() // поражение
     {
+        CanPlay = false;
         Debug.Log("LOSS!");
     }
 
 }
 
 
-// 2 00:36:00
+// 2 00:40:15
