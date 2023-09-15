@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance; // синглтон
 
+    public static int Points; // очки
     public static bool CanPlay; // флаг возможности продолжать игру
+
+
+    [SerializeField]
+    private TextMeshProUGUI pointsText;
 
     private void Awake()
     {
@@ -14,13 +20,14 @@ public class GameController : MonoBehaviour
             Instance = this;
     }
 
-   private void Start()
+    private void Start()
     {
         StartGame();
     }
 
-   public void StartGame() // старт игры
+    public void StartGame() // старт игры
     {
+        SetPoints(0);
         CanPlay = true;
 
         Field.Instance.PrepareField();
@@ -38,7 +45,17 @@ public class GameController : MonoBehaviour
         Debug.Log("LOSS!");
     }
 
+    public void AddPoints(int points)
+    {
+        SetPoints(Points + points);
+    }
+
+    private void SetPoints(int points)
+    {
+        Points = points;
+        pointsText.text = Points.ToString();
+    }
 }
 
 
-// 2 00:40:15
+// 2 00:50:30

@@ -88,4 +88,4 @@ public class SwipeDetection : MonoBehaviour
 
 }
 
-// 2 00:40:15
+// 2 00:50:30

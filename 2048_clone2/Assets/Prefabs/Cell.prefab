@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5295901616194716267}
   - component: {fileID: 5295901616194716265}
-  - component: {fileID: 5295901616194716264}
+  - component: {fileID: 1812390522942527003}
   - component: {fileID: 5295901616194716270}
   m_Layer: 5
   m_Name: Cell
@@ -47,7 +47,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5295901616194716266}
   m_CullTransparentMesh: 1
---- !u!114 &5295901616194716264
+--- !u!114 &1812390522942527003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,8 +67,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 74a83bfc404a89d4f8c1c57776632643, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4775f6a39dc7d964098223dfef3501d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 5295901616194716264}
+  image: {fileID: 1812390522942527003}
   points: {fileID: 5295901617780255019}
 --- !u!1 &5295901617780255013
 GameObject:

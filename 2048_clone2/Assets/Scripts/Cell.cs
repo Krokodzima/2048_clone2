@@ -37,6 +37,8 @@ public class Cell : MonoBehaviour
         HasMerged = true;
 
         UpdateVisual(); // без апдейта - подлый баг (искал 2 дня)
+
+        GameController.Instance.AddPoints(Points);
     }
 
     public void ResetFlags()
@@ -64,4 +66,4 @@ public class Cell : MonoBehaviour
 
 }
 
-// 2 00:40:15
+// 2 00:50:30
