@@ -13,6 +13,9 @@ public class Field : MonoBehaviour
 
     [Space(5)]
     public Color[] Colors; // добавить массив дл€ выбора цвета
+    [Space(5)]
+    public Color LowValueColor;// переменна€ дл€ цвета шрифта значени€ €чейки
+    public Color HighValueColor;
 
     [Header("")]
     [Space(10)] // отступ на панели между пунктами
@@ -32,9 +35,9 @@ public class Field : MonoBehaviour
 
     }
 
-    void Start()
+   void Start()  // 2 00:57 - ошибка создани€ лишних €чеек
     {
-        CreateField(); // вызов метода в старте
+       CreateField(); // вызов метода в старте 
 
         SwipeDetection.SwipeEvent += OnSwipeInput; // подписка на ивент
     }
@@ -278,4 +281,4 @@ public class Field : MonoBehaviour
 }
 */
 
-// 2 00:55:07
+// 2 01:01:45

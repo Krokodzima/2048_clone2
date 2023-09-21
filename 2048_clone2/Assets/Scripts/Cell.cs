@@ -61,9 +61,11 @@ public class Cell : MonoBehaviour
     private void UpdateVisual()// метод отображени€ количества очков и цвет €чейки
     {
         points.text = IsEmpty ? string.Empty : Points.ToString(); // проверка, если поле points пустое, то строка пуста€, иначе передать значение Points
+        points.color = Value <= 2 ? Field.Instance.LowValueColor : Field.Instance.HighValueColor; // цвет текста, если значение меньше 2, то первый цвет, иначе второй цвет
+
         image.color = Field.Instance.Colors[Value];// присвоить цвет image.component   
     }
 
 }
 
-// 2 00:55:07
+// 2 01:01:45
