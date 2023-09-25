@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,8 @@ public class Cell : MonoBehaviour
     private Image image; // задаем пункт в меню - цвет €чейки равный номиналу
     [SerializeField]
     private TextMeshProUGUI points;
+
+    private CellAnimation currentAnimation; // переменна€, к-€ хранить текущую анимацию
 
 
     public void SetValue(int x, int y, int value) // метод дл€ задани€ x,y,value 
@@ -66,6 +69,17 @@ public class Cell : MonoBehaviour
         image.color = Field.Instance.Colors[Value];// присвоить цвет image.component   
     }
 
+    public void SetAnimation(CellAnimation animation) // 
+    {
+        currentAnimation = animation;
+    }
+
+    public void CancelAnimation() // если currentAnimation не пуста€, то вызвать метод  Destroy
+    {
+        if (currentAnimation != null)
+            currentAnimation.Destroy();
+    }    
+
 }
 
-// 2 01:05:32
+// 2 01:26:30
