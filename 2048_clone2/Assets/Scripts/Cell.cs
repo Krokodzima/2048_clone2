@@ -25,13 +25,14 @@ public class Cell : MonoBehaviour
     private CellAnimation currentAnimation; // переменна€, к-€ хранить текущую анимацию
 
 
-    public void SetValue(int x, int y, int value) // метод дл€ задани€ x,y,value 
+    public void SetValue(int x, int y, int value, bool updateUI = true) // метод дл€ задани€ x,y,value 
     {
         X = x;
         Y = y;
         Value = value;
 
-        UpdateVisual();
+        if (updateUI) // усли updateUI = true, то вызываем метод UpdateVisual()
+            UpdateVisual();
     }
 
     public void IncreaseValue()
@@ -39,7 +40,7 @@ public class Cell : MonoBehaviour
         Value++;
         HasMerged = true;
 
-        UpdateVisual(); // без апдейта - подлый баг (искал 2 дн€)
+       // UpdateVisual(); // без апдейта - подлый баг (искал 2 дн€)
 
         GameController.Instance.AddPoints(Points);
     }
@@ -51,17 +52,22 @@ public class Cell : MonoBehaviour
 
     public void MergeWithCell(Cell otherCell)
     {
+        CellAnimationController.Instance.SmoothAnimation(this, otherCell, true); // вызов анимации (откуда, куда, объедин€емс€ ли)
+
         otherCell.IncreaseValue();
         SetValue(X, Y, 0);
     }
 
     public void MoveToCell(Cell target)
     {
-        target.SetValue(target.X, target.Y, Value);
+        CellAnimationController.Instance.SmoothAnimation(this, target, false); // вызов анимации (откуда, куда, объедин€емс€ ли)
+
+
+        target.SetValue(target.X, target.Y, Value, false);
         SetValue(X, Y, 0);
     }
 
-    private void UpdateVisual()// метод отображени€ количества очков и цвет €чейки
+    public void UpdateVisual()// метод отображени€ количества очков и цвет €чейки
     {
         points.text = IsEmpty ? string.Empty : Points.ToString(); // проверка, если поле points пустое, то строка пуста€, иначе передать значение Points
         points.color = Value <= 2 ? Field.Instance.LowValueColor : Field.Instance.HighValueColor; // цвет текста, если значение меньше 2, то первый цвет, иначе второй цвет
@@ -78,8 +84,8 @@ public class Cell : MonoBehaviour
     {
         if (currentAnimation != null)
             currentAnimation.Destroy();
-    }    
+    }
 
 }
 
-// 2 01:26:30
+// 2 01:43:30
