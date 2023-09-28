@@ -18,11 +18,16 @@ public class CellAnimationController : MonoBehaviour
 
         DOTween.Init(); // ВАЖНО!!! вызвать плагин, для инициализации переменных, чтобы не лагало
     }
-    public void SmoothAnimation(Cell from, Cell to, bool isMerging) // добавляет префаб на сцену и передает параметры
+    public void SmoothTransition(Cell from, Cell to, bool isMerging) // добавляет префаб на сцену и передает параметры
     {
         Instantiate(animationPref, transform, false).Move(from, to, isMerging); //Instantiate - создается объект animationPref и сразу обращается к Move
-     }
+    }
 
+    public void SmoothAppear(Cell cell)
+    {
+        Instantiate(animationPref, transform, false).Appear(cell); //Instantiate - создается объект animationPref и сразу обращается к Move
+
+    }
 }
 
 // 2 01:43:30

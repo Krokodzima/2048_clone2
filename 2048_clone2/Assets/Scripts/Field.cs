@@ -254,7 +254,8 @@ public class Field : MonoBehaviour
             throw new System.Exception("There in no any empty cell on the field"); // тогда выводим сообщение
 
         var cell = emptyCells[Random.Range(0, emptyCells.Count)]; // переменна€ cell - рандом от 0 до кол-ва пустых €чеек в списке emptyCells
-        cell.SetValue(cell.X, cell.Y, value); // присвоить €чейке cell координаты и значение 
+        cell.SetValue(cell.X, cell.Y, value, false); // присвоить €чейке cell координаты и значение 
+        CellAnimationController.Instance.SmoothAppear(cell);
     }
 }
 

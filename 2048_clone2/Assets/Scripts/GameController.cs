@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
 
 
     [SerializeField]
+    private TextMeshProUGUI status;
+    [SerializeField]
     private TextMeshProUGUI pointsText;
 
     private void Awake()
@@ -27,6 +29,8 @@ public class GameController : MonoBehaviour
 
     public void StartGame() // старт игры
     {
+        status.text = "";
+
         SetPoints(0);
         CanPlay = true;
 
@@ -36,13 +40,15 @@ public class GameController : MonoBehaviour
     public void Win() // победа
     {
         CanPlay = false;
-        Debug.Log("WIN!");
+        status.text = "You Win!";
+      //  Debug.Log("WIN!"); // вывод в консоль сообщения о победе
     }
 
     public void Loss() // поражение
     {
         CanPlay = false;
-        Debug.Log("LOSS!");
+        status.text = "You Lose!";
+        // Debug.Log("LOSS!"); // вывод в консоль сообщения о победе
     }
 
     public void AddPoints(int points)

@@ -52,7 +52,7 @@ public class Cell : MonoBehaviour
 
     public void MergeWithCell(Cell otherCell)
     {
-        CellAnimationController.Instance.SmoothAnimation(this, otherCell, true); // вызов анимации (откуда, куда, объединяемся ли)
+        CellAnimationController.Instance.SmoothTransition(this, otherCell, true); // вызов анимации (откуда, куда, объединяемся ли)
 
         otherCell.IncreaseValue();
         SetValue(X, Y, 0);
@@ -60,7 +60,7 @@ public class Cell : MonoBehaviour
 
     public void MoveToCell(Cell target)
     {
-        CellAnimationController.Instance.SmoothAnimation(this, target, false); // вызов анимации (откуда, куда, объединяемся ли)
+        CellAnimationController.Instance.SmoothTransition(this, target, false); // вызов анимации (откуда, куда, объединяемся ли)
 
 
         target.SetValue(target.X, target.Y, Value, false);
